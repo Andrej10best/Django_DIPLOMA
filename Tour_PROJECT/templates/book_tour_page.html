@@ -1,0 +1,99 @@
+{% extends 'base_page.html' %}
+{% load static %}
+
+{% block head %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base_page_style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/book_tour_page_style.css' %}">
+    <title>Бронирование</title>
+</head>
+{% endblock %}
+
+{% block content %}
+<div class="block-selected-tour">
+    <div class="selected-tour">
+        <div class="show-selected-tour">
+            <div class="titel-tour">
+                {{ tour.title }}
+            </div>
+            <div class="img-tour">
+                <img src="{{ tour.image.url }}" alt="{{ image.title }}" style="max-width: 300px; height: auto;">
+            </div>
+            <div class="desc-tour">
+                <div class="place-tour">
+                    <span>Место/край:</span>
+                    {{ tour.place }}
+                </div>
+                <div class="start-date-tour">
+                    <span>Дата начала тура:</span>
+                    {{ tour.start_date_tour|date:"d M Y" }}
+                </div>
+                <div class="duration-tour">
+                    <span>Длительность тура:</span>
+                    {{ tour.duration }} дней
+                </div>
+                <div class="max-people-tour">
+                    <span>Количество мест:</span>
+                    {{ tour.max_people }} чел.
+                </div>
+                <div class="av-places-tour">
+                    <span>Свободных мест:</span>
+                    {{ tour.available_places }} чел.
+                </div>
+                <div class="price-tour">
+                    <span>Цена за одного человека:</span>
+                    {{ tour.price_per_person }} руб.
+                </div>
+            </div>
+        </div>
+        <div class="desc-selected-tour">
+            <span>{{ tour.description }}</span>
+        </div>
+        <div class="form-for-user">
+            <div class="form-title">
+                <span>Заполните форму для бронирования:</span>
+            </div>
+            <div class=form-field>
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label for="id_name">Имя:</label>
+                        <input type="text" name="name" id="id_name" placeholder="Введите ваше имя" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_email">Email:</label>
+                        <input type="email" name="email" id="id_email" placeholder="Введите ваш email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_phone">Телефон:</label>
+                        <input type="text" name="phone" id="id_phone" placeholder="Введите ваш телефон" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_number_of_people">Количество людей:</label>
+                        <input type="number" name="number_of_people" id="id_number_of_people"
+                            placeholder="Количество людей" required>
+                    </div>
+                    <div class="book-button"><button type="submit">Забронировать</button></div>
+                </form>
+                <div class="errors">
+                    {% if form.errors %}
+                    {% for field in form %}
+                    {% for error in field.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
